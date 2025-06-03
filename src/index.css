@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* cloud-cost-dashboard-frontend/src/index.css */
+
+/* Tailwind CSS directives - MUST be at the top */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure HTML, Body, and Root div fill the viewport height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* Important to prevent scrollbars from background effects */
+}
