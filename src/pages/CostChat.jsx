@@ -70,7 +70,7 @@ const CostChat = ({ parsedCsvData }) => {
         csvContext: summarizedDataForAI, // Send the summarized context to the backend
       };
 
-      const response = await fetch('http://localhost:3001/api/ai/chat', {
+      const response = await fetch('https://backend-project-190.onrender.com/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

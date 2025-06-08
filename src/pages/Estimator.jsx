@@ -17,7 +17,7 @@ const Estimator = () => {
     setEstimateResult(null);
 
     try {
-      const response = await fetch('http://localhost:3001/api/ai/estimate', {
+      const response = await fetch('https://backend-project-190.onrender.com/api/ai/estimate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -38,7 +38,7 @@ const Insights = ({ parsedCsvData }) => {
       console.log("Summarized data for AI:", summaryData);
 
       // Make sure your backend server is running on http://localhost:3001
-      const response = await fetch('http://localhost:3001/api/ai/insights', {
+      const response = await fetch('https://backend-project-190.onrender.com/api/ai/insights', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

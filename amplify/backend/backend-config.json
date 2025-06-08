@@ -1,0 +1,130 @@
+{
+  "api": {
+    "backendRestApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "awscostoptimizationa1544906a"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "awscostoptimizationa1544906a": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "chatFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "estimateFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "insightsFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_awscostoptimizationa1544906a_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "awscostoptimizationa1544906a"
+        }
+      ]
+    },
+    "AMPLIFY_function_awscostoptimizationa1544906a_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "awscostoptimizationa1544906a"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatFunction_geminiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_estimateFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "estimateFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_estimateFunction_geminiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "estimateFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_estimateFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "estimateFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_insightsFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "insightsFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_insightsFunction_geminiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "insightsFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_insightsFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "insightsFunction"
+        }
+      ]
+    }
+  }
+}

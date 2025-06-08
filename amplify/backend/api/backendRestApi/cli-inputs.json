@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/api": {
+      "name": "/api",
+      "lambdaFunction": "awscostoptimizationa1544906a",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/api/ai/insights": {
+      "name": "/api/ai/insights",
+      "lambdaFunction": "awscostoptimizationa1544906a",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
