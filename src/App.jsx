@@ -1,4 +1,3 @@
-// cloud-cost-dashboard-frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
@@ -13,6 +12,7 @@ import AnomalyDetection from './pages/AnomalyDetection';
 import CostForecast from './pages/CostForecast';
 import Login from './pages/Login';
 import Header from './components/Header'; // Assuming Header is still used for authenticated routes
+import CostSavingsPanel from './pages/CostSavingsPanel'; // Add this line
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './main.jsx'; // Import the auth instance
@@ -59,6 +59,7 @@ function App() {
     { name: 'Dashboard', path: '/dashboard', requiresAuth: true },
     { name: 'Detailed Usage', path: '/usage', requiresAuth: true },
     { name: 'Resource Advisor', path: '/resources', requiresAuth: true },
+    { name: 'Cost Savings', path: '/savings', requiresAuth: true }, // Added this line for Cost Savings Panel
     { name: 'Cost Estimator', path: '/estimator', requiresAuth: true },
     { name: 'AI Insights', path: '/insights', requiresAuth: true },
     { name: 'Ask the Cost AI', path: '/chat', requiresAuth: true },
@@ -186,6 +187,7 @@ function App() {
             <Route path="/usage" element={<PrivateRoute><UsageTable parsedCsvData={parsedCsvData} /></PrivateRoute>} />
             <Route path="/resources" element={<PrivateRoute><ResourceAdvisor parsedCsvData={parsedCsvData} /></PrivateRoute>} />
             <Route path="/chat" element={<PrivateRoute><CostChat parsedCsvData={parsedCsvData} /></PrivateRoute>} />
+            <Route path="/savings" element={<PrivateRoute><CostSavingsPanel parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} /> {/* Ensure isDarkMode is passed here */}
             <Route path="/anomalies" element={<PrivateRoute><AnomalyDetection parsedCsvData={parsedCsvData} /></PrivateRoute>} />
             <Route path="/forecast" element={<PrivateRoute><CostForecast parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
           </Routes>
