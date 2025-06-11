@@ -1,3 +1,4 @@
+// cloud-cost-dashboard-frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
@@ -6,13 +7,18 @@ import Estimator from './pages/Estimator';
 import Insights from './pages/Insights';
 import Settings from './pages/Settings';
 import UsageTable from './pages/UsageTable';
-import ResourceAdvisor from './pages/ResourceAdvisor';
-import CostChat from './pages/CostChat';
+import CostSavingsPanel from './pages/CostSavingsPanel';
 import AnomalyDetection from './pages/AnomalyDetection';
 import CostForecast from './pages/CostForecast';
 import Login from './pages/Login';
 import Header from './components/Header'; // Assuming Header is still used for authenticated routes
-import CostSavingsPanel from './pages/CostSavingsPanel'; // Add this line
+
+// Renamed/New AI-powered components for the broader vision
+import CloudExpertChat from './pages/CloudExpertChat'; // Renamed CostChat
+import ResourceOptimization from './pages/ResourceOptimization'; // New page for AI-driven resource optimization
+import TroubleshootingAssistant from './pages/TroubleshootingAssistant'; // New page for AI-driven troubleshooting
+import ArchitectureAssistant from './pages/ArchitectureAssistant'; // New page for AI-driven architectural guidance
+import SecurityComplianceAdvisor from './pages/SecurityComplianceAdvisor'; // NEW: Security & Compliance Advisor
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './main.jsx'; // Import the auth instance
@@ -24,11 +30,9 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   // Effect to ALWAYS apply 'dark' class to the document HTML element
-  // as dark mode is now fixed for the entire app.
   useEffect(() => {
     document.documentElement.classList.add('dark');
-    // No need for else { remove } as it's always dark
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   // Firebase Auth State Listener
   useEffect(() => {
@@ -39,8 +43,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // Removed toggleDarkMode as dark mode is fixed
-
   const handleCsvParsed = (data) => {
     setParsedCsvData(data);
   };
@@ -48,24 +50,31 @@ function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      setParsedCsvData(null);
+      setParsedCsvData(null); // Clear data on logout
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
-  const navLinks = [
-    { name: 'Upload CSV', path: '/upload', requiresAuth: true },
-    { name: 'Dashboard', path: '/dashboard', requiresAuth: true },
-    { name: 'Detailed Usage', path: '/usage', requiresAuth: true },
-    { name: 'Resource Advisor', path: '/resources', requiresAuth: true },
-    { name: 'Cost Savings', path: '/savings', requiresAuth: true }, // Added this line for Cost Savings Panel
-    { name: 'Cost Estimator', path: '/estimator', requiresAuth: true },
-    { name: 'AI Insights', path: '/insights', requiresAuth: true },
-    { name: 'Ask the Cost AI', path: '/chat', requiresAuth: true },
-    { name: 'Anomaly Detection', path: '/anomalies', requiresAuth: true },
-    { name: 'Cost Forecast', path: '/forecast', requiresAuth: true },
-    { name: 'Settings', path: '/settings', requiresAuth: true },
+  // Define the new, grouped navigation links
+  const navStructure = [
+    { name: 'Overall Dashboard', path: '/dashboard', icon: '📊', type: 'link' },
+    { name: 'AI Cost Management', type: 'group' },
+    { name: 'Upload Data', path: '/upload', icon: '⬆️', type: 'link' },
+    { name: 'Detailed Usage', path: '/usage', icon: '📋', type: 'link' },
+    { name: 'Cost Savings Advisor', path: '/savings', icon: '💸', type: 'link' },
+    { name: 'Cost Estimator', path: '/estimator', icon: '➕', type: 'link' },
+    { name: 'AI Insights', path: '/insights', icon: '💡', type: 'link' },
+    { name: 'Anomaly Detection', path: '/anomalies', icon: '⚠️', type: 'link' },
+    { name: 'Cost Forecast', path: '/forecast', icon: '📈', type: 'link' },
+    { name: 'AI Operations & Management', type: 'group' },
+    { name: 'Resource Optimization', path: '/resource-optimization', icon: '⚙️', type: 'link' },
+    { name: 'Troubleshooting Assistant', path: '/troubleshooting', icon: '❓', type: 'link' },
+    { name: 'Security & Compliance', path: '/security-compliance', icon: '🔒', type: 'link' }, // NEW ITEM ADDED HERE
+    { name: 'AI Strategic Planning', type: 'group' },
+    { name: 'Architecture Assistant', path: '/architecture-assistant', icon: '🏗️', type: 'link' },
+    { name: 'Cloud Expert Chat', path: '/chat', icon: '💬', type: 'link' },
+    { name: 'Settings', path: '/settings', icon: '⚙️', type: 'link' },
   ];
 
   const PrivateRoute = ({ children }) => {
@@ -85,32 +94,36 @@ function App() {
 
   return (
     <Router>
-      {/* Set main app background to dark gray consistently */}
-      <div className="flex min-h-screen bg-gray-900 transition-none"> {/* bg-gray-900 fixed, no transition */}
-        {/* Sidebar content */}
-        <aside className="w-64 bg-gray-800 shadow-lg p-6 flex flex-col justify-between"> {/* Fixed dark sidebar */}
+      <div className="flex min-h-screen bg-gray-900 transition-none">
+        <aside className="w-64 bg-gray-800 shadow-lg p-6 flex flex-col justify-between">
           <div>
-            <div className="text-2xl font-bold mb-8 text-blue-400"> {/* Adjusted text color for dark mode */}
-              Cloud Cost AI
+            <div className="text-2xl font-bold mb-8 text-blue-400">
+              AI Cloud Assistant
             </div>
             <nav>
               <ul>
                 {currentUser ? (
-                  navLinks.map((link) => (
-                    <li key={link.name} className="mb-4">
-                      <NavLink
-                        to={link.path}
-                        className={({ isActive }) =>
-                          `flex items-center p-3 rounded-lg transition-colors duration-200
-                          ${isActive
-                            ? 'bg-blue-700 text-blue-100 font-semibold' // Dark mode active link
-                            : 'text-gray-300 hover:bg-gray-700' // Dark mode default/hover
-                          }`
-                        }
-                      >
-                        {link.name}
-                      </NavLink>
-                    </li>
+                  navStructure.map((item, index) => (
+                    item.type === 'group' ? (
+                      <li key={index} className="mt-6 mb-2 text-gray-400 font-semibold text-sm uppercase tracking-wider">
+                        {item.name}
+                      </li>
+                    ) : (
+                      <li key={item.name} className="mb-2">
+                        <NavLink
+                          to={item.path}
+                          className={({ isActive }) =>
+                            `flex items-center p-3 rounded-lg transition-colors duration-200
+                            ${isActive
+                              ? 'bg-blue-700 text-blue-100 font-semibold'
+                              : 'text-gray-300 hover:bg-gray-700'
+                            }`
+                          }
+                        >
+                          <span className="mr-3 text-lg">{item.icon}</span> {item.name}
+                        </NavLink>
+                      </li>
+                    )
                   ))
                 ) : (
                   <li className="mb-4">
@@ -119,12 +132,12 @@ function App() {
                       className={({ isActive }) =>
                         `flex items-center p-3 rounded-lg transition-colors duration-200
                         ${isActive
-                          ? 'bg-blue-700 text-blue-100 font-semibold' // Dark mode active link
-                          : 'text-gray-300 hover:bg-gray-700' // Dark mode default/hover
+                          ? 'bg-blue-700 text-blue-100 font-semibold'
+                          : 'text-gray-300 hover:bg-gray-700'
                         }`
                       }
                     >
-                      Login
+                      <span className="mr-3 text-lg">🔑</span> Login
                     </NavLink>
                   </li>
                 )}
@@ -132,10 +145,9 @@ function App() {
             </nav>
           </div>
 
-          {/* User Info at the bottom (no dark mode toggle here) */}
           <div className="mt-8">
             {currentUser && (
-              <div className="mb-4 p-3 bg-gray-700 rounded-lg text-gray-200 text-sm"> {/* Dark mode user info bg/text */}
+              <div className="mb-4 p-3 bg-gray-700 rounded-lg text-gray-200 text-sm">
                 <p className="font-semibold">Logged in as:</p>
                 <p className="truncate">{currentUser.displayName || currentUser.email || 'User'}</p>
                 {currentUser.photoURL && (
@@ -149,19 +161,15 @@ function App() {
                 </button>
               </div>
             )}
-            {/* Removed Dark Mode Toggle from sidebar as per request */}
           </div>
         </aside>
 
-        {/* Main content area */}
         <main className="flex-grow p-8">
-          {/* Header component only rendered when authenticated */}
           {!authLoading && currentUser && (
             <Header
               currentUser={currentUser}
               handleLogout={handleLogout}
-              isDarkMode={isDarkMode} // Pass isDarkMode for Header's internal styling
-              // Removed toggleDarkMode prop as it's no longer functional
+              isDarkMode={isDarkMode}
             />
           )}
           <Routes>
@@ -179,17 +187,24 @@ function App() {
                 currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
               )
             } />
+            {/* AI Cost Management Routes */}
             <Route path="/upload" element={<PrivateRoute><Upload onCsvParsed={handleCsvParsed} /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
-            <Route path="/estimator" element={<PrivateRoute><Estimator /></PrivateRoute>} />
-            <Route path="/insights" element={<PrivateRoute><Insights parsedCsvData={parsedCsvData} /></PrivateRoute>} />
-            <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
             <Route path="/usage" element={<PrivateRoute><UsageTable parsedCsvData={parsedCsvData} /></PrivateRoute>} />
-            <Route path="/resources" element={<PrivateRoute><ResourceAdvisor parsedCsvData={parsedCsvData} /></PrivateRoute>} />
-            <Route path="/chat" element={<PrivateRoute><CostChat parsedCsvData={parsedCsvData} /></PrivateRoute>} />
-            <Route path="/savings" element={<PrivateRoute><CostSavingsPanel parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} /> {/* Ensure isDarkMode is passed here */}
-            <Route path="/anomalies" element={<PrivateRoute><AnomalyDetection parsedCsvData={parsedCsvData} /></PrivateRoute>} />
+            <Route path="/savings" element={<PrivateRoute><CostSavingsPanel parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/estimator" element={<PrivateRoute><Estimator parsedCsvData={parsedCsvData} /></PrivateRoute>} />
+            <Route path="/insights" element={<PrivateRoute><Insights parsedCsvData={parsedCsvData} /></PrivateRoute>} />
+            <Route path="/anomalies" element={<PrivateRoute><AnomalyDetection parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
             <Route path="/forecast" element={<PrivateRoute><CostForecast parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
+            {/* AI Operations & Management Routes */}
+            <Route path="/resource-optimization" element={<PrivateRoute><ResourceOptimization parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/troubleshooting" element={<PrivateRoute><TroubleshootingAssistant isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/security-compliance" element={<PrivateRoute><SecurityComplianceAdvisor isDarkMode={isDarkMode} /></PrivateRoute>} /> {/* NEW ROUTE ADDED HERE */}
+            {/* AI Strategic Planning Routes */}
+            <Route path="/architecture-assistant" element={<PrivateRoute><ArchitectureAssistant isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/chat" element={<PrivateRoute><CloudExpertChat parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
+            {/* General Settings */}
+            <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           </Routes>
         </main>
       </div>
