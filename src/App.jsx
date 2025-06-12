@@ -13,12 +13,25 @@ import CostForecast from './pages/CostForecast';
 import Login from './pages/Login';
 import Header from './components/Header'; // Assuming Header is still used for authenticated routes
 
-// Renamed/New AI-powered components for the broader vision
-import CloudExpertChat from './pages/CloudExpertChat'; // Renamed CostChat
-import ResourceOptimization from './pages/ResourceOptimization'; // New page for AI-driven resource optimization
-import TroubleshootingAssistant from './pages/TroubleshootingAssistant'; // New page for AI-driven troubleshooting
-import ArchitectureAssistant from './pages/ArchitectureAssistant'; // New page for AI-driven architectural guidance
-import SecurityComplianceAdvisor from './pages/SecurityComplianceAdvisor'; // NEW: Security & Compliance Advisor
+// Core AI-powered components for broader vision
+import CloudExpertChat from './pages/CloudExpertChat';
+import ResourceOptimization from './pages/ResourceOptimization';
+import TroubleshootingAssistant from './pages/TroubleshootingAssistant';
+import ArchitectureAssistant from './pages/ArchitectureAssistant';
+import SecurityComplianceAdvisor from './pages/SecurityComplianceAdvisor';
+import OperationsPlaybookGenerator from './pages/OperationsPlaybookGenerator';
+import IamAccessSimplifier from './pages/IamAccessSimplifier';
+import DisasterRecoveryPlanner from './pages/DisasterRecoveryPlanner';
+
+// CloudCoach Module Components
+import ExplainMyCloud from './pages/ExplainMyCloud';
+import TeachMeThisSetup from './pages/TeachMeThisSetup';
+import ServiceDecisionWizard from './pages/ServiceDecisionWizard';
+import SecurityPolicyExplainer from './pages/SecurityPolicyExplainer';
+import CloudCourseGenerator from './pages/CloudCourseGenerator';
+import InteractiveCloudLabs from './pages/InteractiveCloudLabs';
+import FlashcardsQuizzes from './pages/FlashcardsQuizzes';
+import CloudCareerGuide from './pages/CloudCareerGuide'; // NEW: Import CloudCareerGuide
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './main.jsx'; // Import the auth instance
@@ -70,10 +83,23 @@ function App() {
     { name: 'AI Operations & Management', type: 'group' },
     { name: 'Resource Optimization', path: '/resource-optimization', icon: '⚙️', type: 'link' },
     { name: 'Troubleshooting Assistant', path: '/troubleshooting', icon: '❓', type: 'link' },
-    { name: 'Security & Compliance', path: '/security-compliance', icon: '🔒', type: 'link' }, // NEW ITEM ADDED HERE
+    { name: 'Security & Compliance', path: '/security-compliance', icon: '🔒', type: 'link' },
+    { name: 'Operational Playbooks', path: '/operational-playbooks', icon: ' playbook-icon', type: 'link' },
+    { name: 'IAM & Access Simplifier', path: '/iam-simplifier', icon: '🔑', type: 'link' },
     { name: 'AI Strategic Planning', type: 'group' },
     { name: 'Architecture Assistant', path: '/architecture-assistant', icon: '🏗️', type: 'link' },
+    { name: 'Disaster Recovery Planner', path: '/dr-planner', icon: '🌐', type: 'link' },
     { name: 'Cloud Expert Chat', path: '/chat', icon: '💬', type: 'link' },
+    // CloudCoach Group
+    { name: 'CloudCoach', type: 'group' },
+    { name: 'Explain My Cloud', path: '/explain-my-cloud', icon: '☁️', type: 'link' },
+    { name: 'Teach Me This Setup', path: '/teach-me-this-setup', icon: '📚', type: 'link' },
+    { name: 'Service Decision Wizard', path: '/service-decision', icon: '✨', type: 'link' },
+    { name: 'Security Policy Explainer', path: '/security-policy-explainer', icon: '🛡️', type: 'link' },
+    { name: 'AI-Powered Course Generator', path: '/cloud-course-generator', icon: '🎓', type: 'link' },
+    { name: 'Interactive Cloud Labs', path: '/interactive-cloud-labs', icon: '🧪', type: 'link' },
+    { name: 'Flashcards & Quizzes', path: '/flashcards-quizzes', icon: '🧠', type: 'link' },
+    { name: 'Cloud Career Guide AI', path: '/cloud-career-guide', icon: '🛣️', type: 'link' }, // NEW ITEM under CloudCoach
     { name: 'Settings', path: '/settings', icon: '⚙️', type: 'link' },
   ];
 
@@ -120,7 +146,16 @@ function App() {
                             }`
                           }
                         >
-                          <span className="mr-3 text-lg">{item.icon}</span> {item.name}
+                          {/* Conditional rendering for custom SVG playbook icon */}
+                          {item.icon === ' playbook-icon' ? (
+                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 0 0 1 3-3h7z"></path>
+                             </svg>
+                          ) : (
+                            <span className="mr-3 text-lg">{item.icon}</span>
+                          )}
+                           {item.name}
                         </NavLink>
                       </li>
                     )
@@ -199,9 +234,21 @@ function App() {
             {/* AI Operations & Management Routes */}
             <Route path="/resource-optimization" element={<PrivateRoute><ResourceOptimization parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
             <Route path="/troubleshooting" element={<PrivateRoute><TroubleshootingAssistant isDarkMode={isDarkMode} /></PrivateRoute>} />
-            <Route path="/security-compliance" element={<PrivateRoute><SecurityComplianceAdvisor isDarkMode={isDarkMode} /></PrivateRoute>} /> {/* NEW ROUTE ADDED HERE */}
+            <Route path="/security-compliance" element={<PrivateRoute><SecurityComplianceAdvisor isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/operational-playbooks" element={<PrivateRoute><OperationsPlaybookGenerator isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/iam-simplifier" element={<PrivateRoute><IamAccessSimplifier isDarkMode={isDarkMode} /></PrivateRoute>} />
             {/* AI Strategic Planning Routes */}
             <Route path="/architecture-assistant" element={<PrivateRoute><ArchitectureAssistant isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/dr-planner" element={<PrivateRoute><DisasterRecoveryPlanner isDarkMode={isDarkMode} /></PrivateRoute>} />
+            {/* CloudCoach Routes */}
+            <Route path="/explain-my-cloud" element={<PrivateRoute><ExplainMyCloud isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/teach-me-this-setup" element={<PrivateRoute><TeachMeThisSetup isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/service-decision" element={<PrivateRoute><ServiceDecisionWizard isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/security-policy-explainer" element={<PrivateRoute><SecurityPolicyExplainer isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/cloud-course-generator" element={<PrivateRoute><CloudCourseGenerator isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/interactive-cloud-labs" element={<PrivateRoute><InteractiveCloudLabs isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/flashcards-quizzes" element={<PrivateRoute><FlashcardsQuizzes isDarkMode={isDarkMode} /></PrivateRoute>} />
+            <Route path="/cloud-career-guide" element={<PrivateRoute><CloudCareerGuide isDarkMode={isDarkMode} /></PrivateRoute>} /> {/* Route for Cloud Career Guide */}
             <Route path="/chat" element={<PrivateRoute><CloudExpertChat parsedCsvData={parsedCsvData} isDarkMode={isDarkMode} /></PrivateRoute>} />
             {/* General Settings */}
             <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
